@@ -1,35 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import pickle1 from '../assets/pickle1.png';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShopContext } from '../context/ShopContext';
+import { ShoppingBag } from 'lucide-react';
+import cartIcon from "../assets/cart_icon.png"
 
 const Navbar = () => {
-  const navigate=useNavigate();
-  const handleRegister=()=>{
+  const navigate = useNavigate();
+  const handleRegister = () => {
     navigate("/register");
   }
-  const handleLogin=()=>{
+  const handleLogin = () => {
     navigate("/login");
   }
+  const { getCartCount } = useContext(ShopContext);
   return (
     <nav className="flex items-center justify-between px-3 py-3 bg-white">
-      
+
       <div className="flex items-center">
-        <img 
+        <img
           src={pickle1}
-          alt="Telangana Spicy Pickles Logo" 
+          alt="Telangana Spicy Pickles Logo"
         />
-    
+
       </div>
 
-      
+
       <div className="flex-1 flex items-center justify-start space-x-6 ml-15">
-        <a href="/picklesproj/" className="text-black font-medium">Home</a>
+        <a href="/" className="text-black font-medium">Home</a>
         <a href="#" className="text-gray-500">About Us</a>
-        <a href="#/pickleslist" className="text-gray-500">Products</a>
+        <a href="/pickleslist" className="text-gray-500">Products</a>
         <a href="#" className="text-gray-500">Contact Us</a>
       </div>
 
-      
+
       <div className="flex items-center space-x-4">
         <button className="p-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -37,6 +41,16 @@ const Navbar = () => {
           </svg>
         </button>
         <div className="flex items-center space-x-2">
+          <Link to={"/cart"}>
+            <div className="relative inline-flex">
+              <div className="bg-gray-700 p-4 rounded-full">
+                <ShoppingBag className="h-5 w-5 text-yellow-100" />
+              </div>
+              <div className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                {getCartCount()}
+              </div>
+            </div>
+          </Link>
           <button onClick={handleLogin} className="px-4 py-1 text-gray-600 border border-gray-300 rounded-full hover:bg-gray-100">
             Login
           </button>

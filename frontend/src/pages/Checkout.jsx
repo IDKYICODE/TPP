@@ -1,54 +1,49 @@
 import Navbar from "../Component/Navbar";
 import bgImage from "..\\assets\\slider.png"
-
-
+import React, { useContext, useEffect, useState } from 'react';
+import { ShopContext } from '../context/ShopContext';
 
 const CheckoutPage = () => {
-    const cartItems = [
-        {
-            name: 'Green Apple Juice Pack',
-            color: 'Brown',
-            quantity: '(2kg)',
-            price: 219.00
-        },
-        {
-            name: 'Grap Seedless varieties',
-            color: 'Brown',
-            quantity: '(2kg)',
-            price: 219.00
-        },
-        {
-            name: 'Almonds Nut Butter',
-            color: 'Brown',
-            quantity: '(2kg)',
-            price: 219.00
-        },
-        {
-            name: 'Blood Orange Juice',
-            color: 'Brown',
-            quantity: '(2kg)',
-            price: 219.00
-        },
-        {
-            name: 'papya Fruit Nutrion',
-            color: 'Brown',
-            quantity: '(2kg)',
-            price: 219.00
+    const { products, currency, cartItems } = useContext(ShopContext);
+    const [cartData, setCartData] = useState([]);
+    useEffect(() => {
+        const tempData = [];
+        for (const items in cartItems) {
+            for (const item in cartItems[items]) {
+                if (cartItems[items][item] > 0) {
+                    tempData.push({
+                        _id: items,
+                        size: item,
+                        quantity: cartItems[items][item]
+                    });
+                }
+            }
         }
-    ];
+        setCartData(tempData);
+    }, [cartItems]);
+    const calculateSubtotal = () => {
+        let total = 0;
+        cartData.forEach(item => {
+            const product = products?.find(p => p._id.toString() === item._id.toString());
+            if (product) {
+                total += product.currentPrice * item.quantity;
+            }
+        });
+        return total.toFixed(2);
+    };
 
-    const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+    const subtotal = calculateSubtotal();
 
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             <div
-            className="flex justify-center items-center "
+                className="flex justify-center items-center "
                 style={{
-                  backgroundImage: `url(${bgImage})`,
-                  backgroundSize: 'cover', 
-                  height: '300px',
-                  width: '100%',
+                    backgroundImage: `url(${bgImage})`,
+                    backgroundSize: 'cover',
+                    height: '300px',
+                    width: '100%',
                 }}>
 
             </div>
@@ -118,7 +113,7 @@ const CheckoutPage = () => {
                                     />
                                 </div>
 
-                                <button className="bg-[#80B500] text-white px-6 py-3 mt-20 rounded hover:bg-green-700 float-left">
+                                <button className="bg-[#80B500] text-white px-6 py-3 mt-20 mb-10 rounded hover:bg-green-700 float-left">
                                     Continue Shipping
                                 </button>
                             </form>
@@ -128,30 +123,35 @@ const CheckoutPage = () => {
                     {/* Right Column - Cart Summary */}
                     <div className="lg:col-span-1">
                         <div className="space-y-4">
-                            {cartItems.map((item, index) => (
-                                <div key={index} className="flex items-center py-4 border-b">
-                                    <div className="w-16 h-16 bg-gray-200 rounded-lg mr-4"></div>
-                                    <div className="flex-grow">
-                                        <h3 className="font-medium">{item.name}</h3>
-                                        <div className="text-sm text-gray-500">
-                                            Color: {item.color}
+                            {cartData.map((item, index) => {
+                                const productData = products ? products.find(product => product._id.toString() === item._id.toString()) : null;
+                                if (!productData) return null;
+                                const itemTotal = (productData.currentPrice * item.quantity).toFixed(2);
+
+                                return (
+                                    <div key={index} className="flex items-center py-4 border-b">
+                                        {/* <div className="w-16 h-16 bg-gray-200 rounded-lg mr-4"></div> */}
+                                        <img src={productData.image} className="w-16 h-16 rounded-lg mr-4"></img>
+                                        <div className="flex-grow">
+                                            <h3 className="font-medium">{productData.title}</h3>
+                                            <div className="text-sm text-gray-500">
+                                                Quantity: {item.quantity}
+                                            </div>
                                         </div>
-                                        <div className="text-sm text-gray-500">
-                                            Quantity: {item.quantity}
-                                        </div>
+                                        <div className="font-medium">£{itemTotal}</div>
                                     </div>
-                                    <div className="font-medium">£{item.price.toFixed(2)}</div>
-                                </div>
-                            ))}
+                                )
+
+                            })}
                             <div className="bg-[#F4F4FC] mt-10 px-5 py-5">
                                 <div className="pt-4">
                                     <div className="flex justify-between mb-2">
                                         <span className="text-gray-600">Subtotals:</span>
-                                        <span>£{subtotal.toFixed(2)}</span>
+                                        <span>£{subtotal}</span>
                                     </div>
                                     <div className="flex justify-between font-medium border-t pt-4">
                                         <span>Totals:</span>
-                                        <span>£{subtotal.toFixed(2)}</span>
+                                        <span>£{subtotal}</span>
                                     </div>
 
                                     <div className="flex items-center mt-4 text-sm text-gray-500">

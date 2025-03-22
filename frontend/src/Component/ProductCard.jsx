@@ -14,6 +14,7 @@ const ProductCard = ({
   discount = 29,
   currentPrice = 180.00,
   originalPrice = 220.00,
+  _id=1,
   unit = "250gms"
 }) => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const ProductCard = ({
   return (
     <div>
       <div className="bg-white rounded-lg shadow-sm p-5 w-70">
-        <Link to="/product">
+        <Link to={`/product/${_id}`}>
           <img
             src={image}
             alt={title}

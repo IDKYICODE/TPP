@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Navbar from '../Component/Navbar'
 import bgImage from "../assets/slider_pl.png"
 import ProductCard from '../Component/ProductCard'
@@ -6,102 +6,16 @@ import Stats from '../Component/Stats'
 import Testimonials from '../Component/Testimonials'
 import Footer from '../Component/Footer'
 import { Search } from 'lucide-react'
+import { ShopContext } from '../context/ShopContext'
 
-// Import all images
-import pick1 from "../assets/pick1.png"
-import pick2 from "../assets/pick2.png"
-import pick3 from "../assets/pick3.png"
-import pick4 from "../assets/pick4.png"
-import pick5 from "../assets/pick5.png"
-import pick6 from "../assets/pick6.png"
-import pick7 from "../assets/pick7.png"
 
-const products = [
-    {
-        image: pick1,
-        title: "Mango Avakaya",
-        rating: 2,
-        reviews: 24,
-        discount: 29,
-        currentPrice: 180.00,
-        originalPrice: 220.00,
-        unit: "250gms"
-    },
-    {
-        image: pick2,
-        title: "Mango Avakaya",
-        rating: 2,
-        reviews: 24,
-        discount: 29,
-        currentPrice: 180.00,
-        originalPrice: 220.00,
-        unit: "250gms"
-    },
-    {
-        image: pick3,
-        title: "Mango Avakaya",
-        rating: 2,
-        reviews: 24,
-        discount: 29,
-        currentPrice: 180.00,
-        originalPrice: 220.00,
-        unit: "250gms"
-    },
-    {
-        image: pick4,
-        title: "Mango Avakaya",
-        rating: 2,
-        reviews: 24,
-        discount: 29,
-        currentPrice: 180.00,
-        originalPrice: 220.00,
-        unit: "250gms"
-    },
-    {
-        image: pick5,
-        title: "Mango Avakaya",
-        rating: 2,
-        reviews: 24,
-        discount: 29,
-        currentPrice: 180.00,
-        originalPrice: 220.00,
-        unit: "250gms"
-    },
-    {
-        image: pick6,
-        title: "Mango Avakaya",
-        rating: 2,
-        reviews: 24,
-        discount: 29,
-        currentPrice: 180.00,
-        originalPrice: 220.00,
-        unit: "250gms"
-    },
-    {
-        image: pick7,
-        title: "Mango Avakaya",
-        rating: 2,
-        reviews: 24,
-        discount: 29,
-        currentPrice: 180.00,
-        originalPrice: 220.00,
-        unit: "250gms"
-    },
-    {
-        image: pick6,
-        title: "Mango Avakaya",
-        rating: 2,
-        reviews: 24,
-        discount: 29,
-        currentPrice: 180.00,
-        originalPrice: 220.00,
-        unit: "250gms"
-    }
-];
 
 const tags = ['Breads', 'healthy', 'organic', 'tomato', 'juices', 'natural'];
 
 function PicklesList() {
+
+    const {products}=useContext(ShopContext);
+
     return (
         <div>
             <Navbar />
@@ -186,6 +100,7 @@ function PicklesList() {
                                 currentPrice={product.currentPrice}
                                 originalPrice={product.originalPrice}
                                 unit={product.unit}
+                                _id={product._id}
                             />
                         ))}
                     </div>             

@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Import images
 import pick1 from '../assets/pick1.png';
 import pick2 from '../assets/pick2.png';
 import pick3 from '../assets/pick3.png';
+import { ShopContext } from '../context/ShopContext';
 
-const UpperProductDetails = () => {
+const UpperProductDetails = ({product}) => {
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const {addToCart } = useContext(ShopContext);
   
   // Array of images using imported images
   const images = [
@@ -23,7 +25,7 @@ const UpperProductDetails = () => {
   };
 
   const increaseQuantity = () => {
-    setQuantity(quantity + 1);
+     if(quantity<4) setQuantity(quantity + 1);
   };
 
   const nextImage = () => {
@@ -89,13 +91,13 @@ const UpperProductDetails = () => {
           {/* Content Section */}
           <div className="w-1/2 space-y-4">
             <div className="flex justify-between items-start">
-              <h2 className="text-2xl font-semibold">Mango Avakaya</h2>
-              <span className="text-xl font-medium text-[#99cc00]">₹ 180.00</span>
+              <h2 className="text-2xl font-semibold">{product.title}</h2>
+              <span className="text-xl font-medium text-[#99cc00]">₹ {product.currentPrice}</span>
             </div>
 
             <div className="flex items-center gap-2">
               <div className="flex">
-                {[...Array(5)].map((_, i) => (
+                {[...Array(product.rating)].map((_, i) => (
                   <Star key={`star-${i}`} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
@@ -103,9 +105,7 @@ const UpperProductDetails = () => {
             </div>
 
             <p className="text-gray-600 text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp 
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis 
-              nostrud exercitation ullamco laboris nisi ut aliquip commodo
+              {product.description}
             </p>
 
             <div>
@@ -118,8 +118,8 @@ const UpperProductDetails = () => {
                   >
                     -
                   </button>
-                  <div className="w-8 h-8 flex items-center justify-center text-gray-700 border-t border-b border-[#99cc00]">
-                    {quantity}
+                  <div className="h-8 px-2 flex items-center justify-center text-gray-700 border-t border-b border-[#99cc00]">
+                    {quantity*250}g
                   </div>
                   <button
                     onClick={increaseQuantity}
@@ -141,7 +141,7 @@ const UpperProductDetails = () => {
               </div>
             </div>
 
-            <button className="w-full py-3 bg-[#99cc00] text-white rounded-md font-medium hover:bg-[#88b300] transition-colors">
+            <button onClick={()=>addToCart(product._id,quantity*250)} className="w-full py-3 bg-[#99cc00] text-white rounded-md font-medium hover:bg-[#88b300] transition-colors">
               Add To Cart
             </button>
           </div>
