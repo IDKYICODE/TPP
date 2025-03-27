@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState,useContext, useEffect } from 'react';
+import { ShopContext } from '../context/ShopContext';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage = () => {
+  const {token,setToken,backendUrl,navigate}=useContext(ShopContext);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    firstName: '',
-    lastName: '',
+    userName: '',
     phoneNumber: '',
     agreeToTerms: false
   });
@@ -16,7 +20,35 @@ const RegisterPage = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    console.log(formData);
+    
   };
+  const onSubmitHandler = async(e)=>{
+    e.preventDefault();
+    console.log("Clicked");
+    
+    try {
+      // console.log(formData.lastName);
+      const name=formData.userName,email=formData.email,password=formData.password;
+      const response =await axios.post(backendUrl + '/api/user/register',{name,email,password});
+      if(response.data.success){
+        setToken(response.data.token);
+        localStorage.setItem('token',response.data.token)
+      } else{
+        console.log(response.data.message);
+        toast.error(response.data.message);
+      }
+      
+    } catch (error) { 
+      console.log(error);
+      toast.error(error);
+    }
+  }
+  useEffect(()=>{
+    if(token){
+      navigate('/');
+    }
+  },[token])
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -27,7 +59,7 @@ const RegisterPage = () => {
             Don't have an account?Register
           </p>
 
-          <form className="space-y-4">
+          <form onSubmit={onSubmitHandler} className="space-y-4">
             <input
               type="email"
               name="email"
@@ -51,18 +83,9 @@ const RegisterPage = () => {
 
             <input
               type="text"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              className="w-full p-3 border border-gray-200 rounded focus:outline-none focus:border-gray-400"
-            />
-
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value={formData.lastName}
+              name="userName"
+              placeholder="User Name"
+              value={formData.userName}
               onChange={handleInputChange}
               className="w-full p-3 border border-gray-200 rounded focus:outline-none focus:border-gray-400"
             />

@@ -45,7 +45,7 @@ const ShoppingCart = () => {
     cartData.forEach(item => {
       const product = products?.find(p => p._id.toString() === item._id.toString());
       if (product) {
-        total += product.currentPrice * item.quantity;
+        total += product.price * item.quantity;
       }
     });
     return total.toFixed(2);
@@ -70,12 +70,13 @@ const ShoppingCart = () => {
                 
                 if (!productData) return null;
                 
-                const itemTotal = (productData.currentPrice * item.quantity).toFixed(2);
+                const itemTotal = (productData.price * item.quantity).toFixed(2);
                 
                 return (
                   <div key={index} className="grid grid-cols-5 items-center gap-8 py-6">
                     <div className="col-span-2 flex gap-4">
                       <div className="bg-gray-200 w-16 h-16 relative">
+                        <img src={productData.image[0]} className='w-16 h-16 relative'></img>
                         <button 
                           onClick={() => removeItem(item._id, item.size)}
                           className="absolute -top-2 -right-2 text-red-500 bg-white rounded-full w-4 h-4 flex items-center justify-center text-sm hover:bg-red-50 transition-colors duration-200"
@@ -84,14 +85,14 @@ const ShoppingCart = () => {
                         </button>
                       </div>
                       <div>
-                        <h3 className="text-base font-medium">{productData.title}</h3>
+                        <h3 className="text-base font-medium">{productData.name}</h3>
                         {item.size !== 'default' && (
                           <p className="text-sm text-gray-500">Size: {item.size}</p>
                         )}
                       </div>
                     </div>
 
-                    <div className="text-center">{currency}{productData.currentPrice}</div>
+                    <div className="text-center">{currency}{productData.price}</div>
                   
                     <div className="flex items-center justify-center gap-2">
                       <button 

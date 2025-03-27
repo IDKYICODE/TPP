@@ -1,22 +1,25 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
-
-// Import images
-import pick1 from '../assets/pick1.png';
-import pick2 from '../assets/pick2.png';
-import pick3 from '../assets/pick3.png';
 import { ShopContext } from '../context/ShopContext';
 
-const UpperProductDetails = ({product}) => {
+const UpperProductDetails = ({ product }) => {
+  // useEffect(() => {
+  //   console.log('Product:', product);
+  //   if (product) {
+  //     console.log('Product image:', product.image);
+  //   }
+  // }, [product]);
+
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const {addToCart } = useContext(ShopContext);
-  
-  // Array of images using imported images
-  const images = [
-    { main: pick1, thumb: pick1 },
-    { main: pick3, thumb: pick2 }
-  ];
+  const { addToCart } = useContext(ShopContext);
+
+  if (!product) {
+    return <div className="w-full text-center py-10">Loading product details...</div>;
+  }
+
+  const images = Array.isArray(product.image) ? product.image : 
+                (product.image ? [product.image] : []);
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -25,7 +28,7 @@ const UpperProductDetails = ({product}) => {
   };
 
   const increaseQuantity = () => {
-     if(quantity<4) setQuantity(quantity + 1);
+    if (quantity < 4) setQuantity(quantity + 1);
   };
 
   const nextImage = () => {
@@ -40,7 +43,6 @@ const UpperProductDetails = ({product}) => {
     setCurrentImageIndex(index);
   };
 
-  // Navigation button component for reusability
   const NavigationButton = ({ direction, onClick, children }) => (
     <button 
       onClick={onClick}
@@ -54,15 +56,14 @@ const UpperProductDetails = ({product}) => {
     <div className="flex justify-center items-center min-h-[calc(100vh-200px)] mb-10">
       <div className="max-w-5xl p-6 bg-white rounded-lg w-full mx-4">
         <div className="flex gap-8">
-          {/* Image Section */}
           <div className="relative w-1/2">
             <NavigationButton direction="left" onClick={previousImage}>
               <ChevronLeft className="w-5 h-5 text-gray-600 group-hover:text-white transition-colors" />
             </NavigationButton>
             
             <img 
-              src={images[currentImageIndex].main}
-              alt="Mango Avakaya"
+              src={images[currentImageIndex]}
+              alt={product.name}
               className="w-full rounded-lg transition-opacity duration-300"
             />
             
@@ -70,12 +71,11 @@ const UpperProductDetails = ({product}) => {
               <ChevronRight className="w-5 h-5 text-gray-600 group-hover:text-white transition-colors" />
             </NavigationButton>
 
-            {/* Thumbnail previews */}
             <div className="absolute -top-4 left-4 flex gap-2">
               {images.map((image, index) => (
                 <img 
                   key={`thumb-${index}`}
-                  src={image.thumb}
+                  src={image}
                   alt={`thumbnail ${index + 1}`}
                   onClick={() => selectImage(index)}
                   className={`w-12 h-12 rounded border-2 cursor-pointer transition-all duration-200 ${
@@ -88,16 +88,15 @@ const UpperProductDetails = ({product}) => {
             </div>
           </div>
 
-          {/* Content Section */}
           <div className="w-1/2 space-y-4">
             <div className="flex justify-between items-start">
-              <h2 className="text-2xl font-semibold">{product.title}</h2>
-              <span className="text-xl font-medium text-[#99cc00]">₹ {product.currentPrice}</span>
+              <h2 className="text-2xl font-semibold">{product.name}</h2>
+              <span className="text-xl font-medium text-[#99cc00]">₹ {product.price}</span>
             </div>
 
             <div className="flex items-center gap-2">
               <div className="flex">
-                {[...Array(product.rating)].map((_, i) => (
+                {[...Array(product.rating || 0)].map((_, i) => (
                   <Star key={`star-${i}`} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>

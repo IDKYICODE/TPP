@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Plus, CheckSquare, ShoppingBag } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink,useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
-  const [activeItem, setActiveItem] = useState('Orders');
+  const location = useLocation();
+  const [activeItem, setActiveItem] = useState("Add Items");
   
   const menuItems = [
     { id: 'add', label: 'Add Items', icon: 'plus' },

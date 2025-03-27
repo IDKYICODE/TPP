@@ -7,6 +7,9 @@ import ProductDetails from "./pages/ProductDetails"
 import Cart from "./pages/Cart"
 import LoginPage from "./pages/LoginPage";
 import Register from "./pages/Register"
+import Orders from "./pages/Orders";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const App = () => (
   <div style={{ textAlign: "center" }}>
@@ -18,6 +21,7 @@ const App = () => (
       <Route path="/product/:productId" element={<ProductDetails/>} />
       <Route path="/cart" element={<Cart/>} />
       <Route path="/checkout" element={<Checkout/>} />
+      <Route path="/orders" element={<Orders/>}/>
     </Routes>
   </div>
 );

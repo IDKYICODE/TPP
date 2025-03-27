@@ -92,12 +92,12 @@ function PicklesList() {
                         {products.map((product, index) => (
                             <ProductCard
                                 key={index}
-                                image={product.image}
-                                title={product.title}
+                                image={product.image[0]}
+                                title={product.name}
                                 rating={product.rating}
                                 reviews={product.reviews}
                                 discount={product.discount}
-                                currentPrice={product.currentPrice}
+                                currentPrice={product.price}
                                 originalPrice={product.originalPrice}
                                 unit={product.unit}
                                 _id={product._id}

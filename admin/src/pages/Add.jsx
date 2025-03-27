@@ -4,13 +4,14 @@ import axios from 'axios';
 import {backendUrl} from '../App';
 import { toast } from 'react-toastify';
 
+
 const Add = ({token}) => {
   // Initial state definitions - will be used for resetting the form
   const initialProductData = {
     name: '',
     description: '',
-    category: 'Men',
-    subCategory: 'Topwear',
+    category: 'Veg',
+    subCategory: 'Spicy',
     price: '25',
     sizes: [],
     bestseller: false
@@ -204,9 +205,8 @@ const Add = ({token}) => {
               onChange={handleInputChange}
               className="w-48 p-2 border border-gray-300 rounded"
             >
-              <option value="Men">Men</option>
-              <option value="Women">Women</option>
-              <option value="Kids">Kids</option>
+              <option value="Veg">Veg</option>
+              <option value="Non-Veg">Non-Veg</option>
             </select>
           </div>
 
@@ -218,10 +218,8 @@ const Add = ({token}) => {
               onChange={handleInputChange}
               className="w-48 p-2 border border-gray-300 rounded"
             >
-              <option value="Topwear">Topwear</option>
-              <option value="Bottomwear">Bottomwear</option>
-              <option value="Footwear">Footwear</option>
-              <option value="Accessories">Accessories</option>
+              <option value="Spicy">Spicy</option>
+              <option value="Organic">Organic</option>
             </select>
           </div>
 
@@ -237,7 +235,7 @@ const Add = ({token}) => {
           </div>
         </div>
 
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <h2 className="text-xl text-gray-700 mb-2">Product Sizes</h2>
           <div className="flex space-x-2">
             {['S', 'M', 'L', 'XL', 'XXL'].map((size) => (
@@ -254,7 +252,7 @@ const Add = ({token}) => {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         <div className="mb-8">
           <label className="flex items-center">

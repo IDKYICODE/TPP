@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useContext,useEffect } from 'react';
+import { ShopContext } from '../context/ShopContext';
+
+import axios from "axios"
+import { toast } from 'react-toastify';
 
 const LoginWindow = () => {
+  const {token,setToken,backendUrl,navigate}=useContext(ShopContext);
+  
   const [formData, setFormData] = useState({
-    loginEmail: '',
-    loginPassword: '',
+    email: '',
+    password: '',
   });
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -13,6 +18,33 @@ const LoginWindow = () => {
       [name]: value
     }));
   };
+  const onSubmitHandler = async(e)=>{
+    e.preventDefault();
+    console.log(formData);
+    try {
+      const email=formData.email,password=formData.password;
+      const response =await axios.post(backendUrl + '/api/user/login',{email,password});
+      console.log(response);
+      
+      if(response.data.success){
+        setToken(response.data.token);
+        localStorage.setItem('token',response.data.token)
+      } else{
+        console.log(response.data.message);
+        
+        toast.error(response.data.message);
+      }
+      
+    } catch (error) { 
+      console.log(error);
+      toast.error(error); 
+    }
+  }
+  useEffect(()=>{
+      if(token){
+        navigate('/');
+      }
+    },[token])
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -23,21 +55,21 @@ const LoginWindow = () => {
             Please login using account detail bellow.
           </p>
 
-          <form className="space-y-4">
+          <form onSubmit={onSubmitHandler} className="space-y-4">
             <input
               type="email"
-              name="loginEmail"
+              name="email"
               placeholder="Email Address"
-              value={formData.loginEmail}
+              value={formData.email}
               onChange={handleInputChange}
               className="w-full p-3 border border-gray-200 rounded focus:outline-none focus:border-gray-400"
             />
             
             <input
               type="password"
-              name="loginPassword"
+              name="password"
               placeholder="Password"
-              value={formData.loginPassword}
+              value={formData.password}
               onChange={handleInputChange}
               className="w-full p-3 border border-gray-200 rounded focus:outline-none focus:border-gray-400"
             />
@@ -48,7 +80,7 @@ const LoginWindow = () => {
               </a>
             </div>
 
-            <button 
+            <button   
               type="submit" 
               className="w-full p-3 bg-white border border-green-600 text-green-600 hover:bg-green-50 transition-colors duration-200 rounded"
             >
@@ -56,7 +88,7 @@ const LoginWindow = () => {
             </button>
 
             <p className="text-center text-sm text-gray-600">
-              Don't Have an Account? <a href="#" className="text-gray-800">Create account</a>
+              Don't Have an Account? <a href="/register " className="text-gray-800">Create account</a>
             </p>
           </form>
         </div>

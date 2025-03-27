@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../Component/Navbar';
 import Slider4 from '../Component/Slider4';
 import RegisterPage from '../Component/RegisterPage';
-const LoginPage = () => {
+const Register = () => {
     return (
         <div>
             <Navbar />
@@ -13,4 +13,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default Register;

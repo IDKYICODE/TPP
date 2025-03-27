@@ -26,7 +26,7 @@ const CheckoutPage = () => {
         cartData.forEach(item => {
             const product = products?.find(p => p._id.toString() === item._id.toString());
             if (product) {
-                total += product.currentPrice * item.quantity;
+                total += product.price * item.quantity;
             }
         });
         return total.toFixed(2);
@@ -126,19 +126,19 @@ const CheckoutPage = () => {
                             {cartData.map((item, index) => {
                                 const productData = products ? products.find(product => product._id.toString() === item._id.toString()) : null;
                                 if (!productData) return null;
-                                const itemTotal = (productData.currentPrice * item.quantity).toFixed(2);
+                                const itemTotal = (productData.price * item.quantity).toFixed(2);
 
                                 return (
                                     <div key={index} className="flex items-center py-4 border-b">
                                         {/* <div className="w-16 h-16 bg-gray-200 rounded-lg mr-4"></div> */}
-                                        <img src={productData.image} className="w-16 h-16 rounded-lg mr-4"></img>
+                                        <img src={productData.image[0]} className="w-16 h-16 rounded-lg mr-4"></img>
                                         <div className="flex-grow">
-                                            <h3 className="font-medium">{productData.title}</h3>
+                                            <h3 className="font-medium">{productData.name}</h3>
                                             <div className="text-sm text-gray-500">
                                                 Quantity: {item.quantity}
                                             </div>
                                         </div>
-                                        <div className="font-medium">£{itemTotal}</div>
+                                        <div className="font-medium">{currency}{itemTotal}</div>
                                     </div>
                                 )
 
@@ -147,11 +147,11 @@ const CheckoutPage = () => {
                                 <div className="pt-4">
                                     <div className="flex justify-between mb-2">
                                         <span className="text-gray-600">Subtotals:</span>
-                                        <span>£{subtotal}</span>
+                                        <span>{currency}{subtotal}</span>
                                     </div>
                                     <div className="flex justify-between font-medium border-t pt-4">
                                         <span>Totals:</span>
-                                        <span>£{subtotal}</span>
+                                        <span>{currency}{subtotal}</span>
                                     </div>
 
                                     <div className="flex items-center mt-4 text-sm text-gray-500">
